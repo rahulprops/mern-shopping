@@ -1,6 +1,7 @@
 import userModel from "../models/user.Model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import generateToken from "../config/jwt.js";
 
 export const Register = async (req, res) => {
   try {
@@ -62,24 +63,24 @@ export const login = async (req, res) => {
     // Find user (with password)
     const user = await userModel.findOne({ email }).select("+password");
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email " });
     }
 
-    // 3. Compare password
+    //  Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid  password" });
     }
+     
+    // generate token 
+       generateToken(res,user._id)
+    
+    
 
-    // 4. Generate JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRE,
-    });
-
-    // 5. Send response (you can also set it in cookie if needed)
+    //  Send response (you can also set it in cookie if needed)
     res.status(200).json({
       message: "Login successful",
-      token,
+      
       user: {
         _id: user._id,
         name: user.name,
