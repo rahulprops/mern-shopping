@@ -104,3 +104,13 @@ export const logout=async (req,res)=>{
 
   }
 }
+
+//! admin user information
+ export const Users= async (req,res)=>{
+  try {
+     const users= await userModel.find()
+     return res.status(200).json({message:"all users",users})
+  } catch (error) {
+    return res.status(500).json({message:`server error ${error.message}`})
+  }
+ }
