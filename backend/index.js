@@ -5,6 +5,7 @@ import UserRouter from './routers/User.Router.js';
 import bodyParser from 'body-parser';
 import ProductRouter from './routers/Product.Router.js';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 
 dotenv.config({path:"./backend/.env"})
 const app =express()
@@ -13,7 +14,7 @@ const app =express()
  //! middlewares
  app.use(bodyParser.json())
  app.use(bodyParser.urlencoded({extended:true}))
-
+app.use(cookieParser())
 //! Serve static images
 app.use("/image", express.static(path.join(process.cwd(), "public")));
 //http://localhost:PORT/image/product/filename.jpg

@@ -3,6 +3,7 @@
     import shortid from 'shortid'
     import path from 'path';
     import multer from 'multer';
+import { isAuthUser } from '../middleware/auth/isAuth.js';
 
     const ProductRouter=express.Router()
     
@@ -21,7 +22,7 @@
         storage:proStorage,
         limits:{fileSize:1024*1024*5}
     })
-    ProductRouter.post("/create",uploadProduct.single("productImage"),createProduct)
+    ProductRouter.post("/create",isAuthUser,uploadProduct.single("productImage"),createProduct)
     ProductRouter.delete("/:id",deleteProduct)
     ProductRouter.put("/update/:id",uploadProduct.single("productImage"),updateProduct)
     ProductRouter.get("/",allProduct)
