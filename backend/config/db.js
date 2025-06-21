@@ -9,7 +9,8 @@ const dbConnect = async ()=>{
         console.log("database not connect ")
     }
     } catch (error) {
-         throw new Error(error.message)
+        //  throw new Error(error.message)
+         process.exit(1);
     }
 }
 export default dbConnect;

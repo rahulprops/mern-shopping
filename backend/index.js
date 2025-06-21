@@ -3,8 +3,9 @@ import dotenv from 'dotenv'
 import dbConnect from './config/db.js';
 import UserRouter from './routers/User.Router.js';
 import bodyParser from 'body-parser';
+import ProductRouter from './routers/Product.Router.js';
 
-dotenv.config({path:"backend/.env"})
+dotenv.config({path:"./backend/.env"})
 const app =express()
  const port =process.env.PORT || 4000;
 
@@ -14,6 +15,13 @@ const app =express()
 
  //! apis
  app.use("/api/user",UserRouter)
+ app.use("/api/product",ProductRouter)
+
+ //! 404 handle
+//  app.use("*",(req,res)=>{
+
+//  })
+ 
 //! server start
 app.listen(port,()=>{
     console.log(`server is running http://localhost:${port}`)
