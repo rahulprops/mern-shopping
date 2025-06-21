@@ -1,5 +1,5 @@
     import express from 'express'
-    import { createProduct } from '../controllers/product.Controller.js';
+    import { createProduct, deleteProduct } from '../controllers/product.Controller.js';
     import shortid from 'shortid'
     import path from 'path';
     import multer from 'multer';
@@ -22,5 +22,6 @@
         limits:{fileSize:1024000*5}
     })
     ProductRouter.post("/create",uploadProduct.single("productImage"),createProduct)
+    ProductRouter.delete("/:id",deleteProduct)
 
     export default ProductRouter;

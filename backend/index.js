@@ -4,6 +4,7 @@ import dbConnect from './config/db.js';
 import UserRouter from './routers/User.Router.js';
 import bodyParser from 'body-parser';
 import ProductRouter from './routers/Product.Router.js';
+import path from 'path';
 
 dotenv.config({path:"./backend/.env"})
 const app =express()
@@ -13,6 +14,10 @@ const app =express()
  app.use(bodyParser.json())
  app.use(bodyParser.urlencoded({extended:true}))
 
+//! Serve static images
+app.use("/image", express.static(path.join(process.cwd(), "public")));
+//http://localhost:PORT/image/product/filename.jpg
+
  //! apis
  app.use("/api/user",UserRouter)
  app.use("/api/product",ProductRouter)
@@ -21,6 +26,9 @@ const app =express()
 //  app.use("*",(req,res)=>{
 
 //  })
+// app.use("*", (req, res) => {
+//   res.status(404).json({ message: "API route not found" });
+// });
  
 //! server start
 app.listen(port,()=>{

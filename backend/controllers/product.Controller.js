@@ -1,81 +1,91 @@
 import ProductModel from "../models/Product.Model.js";
+import fs from 'fs';
+import path from 'path';
 
 //! create product
+
+
 export const createProduct = async (req, res) => {
   try {
-    const {
-      name,
-      description,
-      price,
-      category,
-      stock,
-    } = req.body;
+    const { name, description, price, category, stock } = req.body;
 
-    const productImage=req.file.filename;
-    // console.log(productImage)
-
-    if(!productImage){
-      return res.status(400).json({message:"please upload image"})
+    // Check if an image was uploaded
+    if (!req.file || !req.file.filename) {
+      return res.status(400).json({ message: "Please upload a product image" });
     }
-    // Check required fields
+
+    const productImage = req.file.filename;
+
+    // Validate required fields
     if (!name || !description || !price || !category || !stock) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Create and save product
+    // Create product instance
     const product = new ProductModel({
       name,
       description,
-      productImage,
       price,
       category,
       stock,
+      productImage, // store only the filename, or build URL if needed
     });
 
-    if(product){
     await product.save();
 
     res.status(201).json({
       message: "Product created successfully",
       product,
     });
-}else{
-    res.status(400).json({
-        message:"product is not created"
-    })
-}
+
   } catch (error) {
+    console.error("Create Product Error:", error.message);
     res.status(500).json({
       message: `Server error: ${error.message}`,
     });
   }
 };
+
 
 //!delete product 
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    //  Check if product exists
+    //  Find the product
     const product = await ProductModel.findById(id);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    //  Delete the product
-    await product.deleteOne(); 
+    //  Get the image filename
+    const imageFilename = product.productImage;
+    // console.log(imageFilename)
 
-    //  Success response
+    //  Delete image file from disk
+    const imagePath = path.join(process.cwd(), 'backend','public', 'product', imageFilename);
+    // console.log(imagePath)
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath); // Delete the image
+    }
+
+    //  Delete the product from DB
+    await product.deleteOne();
+
+    //  Send response
     res.status(200).json({
-      message: "Product deleted successfully",
+      message: "Product and image deleted successfully",
       deletedProductId: id,
     });
+
   } catch (error) {
     res.status(500).json({
       message: `Server error: ${error.message}`,
     });
   }
 };
+
+
 
 //! update product 
 
