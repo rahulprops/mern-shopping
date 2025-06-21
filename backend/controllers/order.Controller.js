@@ -1,5 +1,7 @@
 import orderModle from "../models/order.Modle.js";
 
+//! create order 
+
 export const createOrder=async (req,res)=>{
     try {
         const {shippingInfo,orderItems,paymentInfo,itemPrice,taxPrice,shippingPrice,totalPrice}=req.body;
@@ -19,6 +21,19 @@ export const createOrder=async (req,res)=>{
 
         await newOrder.save()
         return res.status(201).json({message:"create order sucessful",newOrder})
+    } catch (error) {
+        return res.status(500).json({message:`server error ${error.message}`})
+    }
+}
+
+//! get single order details
+export const getSingleOrders= async (req,res)=>{
+    try {
+         const order= await orderModle.findById(req.params.id).populate("user","name email")
+         if(!order){
+            return res.status(404).json({message:"order not found"})
+         }
+       return res.status(200).json({message:"sucess",order})
     } catch (error) {
         return res.status(500).json({message:`server error ${error.message}`})
     }
