@@ -65,3 +65,25 @@ export const getSingleOrders= async (req,res)=>{
       return res.status(500).json({message:`server error ${error.message}`})  
     }
  }
+
+ //! update order status
+ export const updateOrderStatus= async (req,res)=>{
+    try {
+         const order= await orderModle.findById(req.params.id)
+         if(!order){
+            return res.status(404).json({message:"no order found"})
+         }
+         if(order.orderStatus==="Delivered"){
+            return res.status(400).json({message:"order already delivered"})
+         }
+
+         order.orderStatus=req.body.status;
+         if(order.orderStatus==="Delivered"){
+            order.deliveredAt=Date.now()
+         }
+         await order.save()
+         return res.status(200).json({message:"order status updated",order})
+    } catch (error) {
+        return res.status(500).json({message:`server error ${error.message}`})
+    }
+ }

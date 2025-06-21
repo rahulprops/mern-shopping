@@ -52,6 +52,11 @@ const orderSchema = new Schema({
       },
     },
   ],
+  orderStatus:{
+    type:String,
+    required:true,
+    default:"processing"
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
