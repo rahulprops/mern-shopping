@@ -2,7 +2,7 @@ import userModel from "../models/user.Model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import generateToken from "../config/jwt.js";
-
+//! register users
 export const Register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -50,7 +50,7 @@ export const Register = async (req, res) => {
 };
 
 
-
+//! login users
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -92,3 +92,15 @@ export const login = async (req, res) => {
     res.status(500).json({ message: `Server error: ${error.message}` });
   }
 };
+//! logout users
+export const logout=async (req,res)=>{
+  try {
+      res.clearCookie("token", {
+      httpOnly: true,
+    });
+     res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+        res.status(500).json({ message: `Server error: ${error.message}` });
+
+  }
+}

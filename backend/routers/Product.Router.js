@@ -1,11 +1,11 @@
     import express from 'express'
-    import { createProduct, deleteProduct, updateProduct } from '../controllers/product.Controller.js';
+    import { allProduct, createProduct, deleteProduct, singleProduct, updateProduct } from '../controllers/product.Controller.js';
     import shortid from 'shortid'
     import path from 'path';
     import multer from 'multer';
 
     const ProductRouter=express.Router()
-    const imatpath = path.join(process.cwd(), 'public', 'product');
+    
     // storage stup
     const proStorage=multer.diskStorage({
         destination:(req,file,cb)=>{
@@ -19,10 +19,11 @@
     // initialize multer
     const uploadProduct=multer({
         storage:proStorage,
-        limits:{fileSize:1024000*5}
+        limits:{fileSize:1024*1024*5}
     })
     ProductRouter.post("/create",uploadProduct.single("productImage"),createProduct)
     ProductRouter.delete("/:id",deleteProduct)
     ProductRouter.put("/update/:id",uploadProduct.single("productImage"),updateProduct)
-
+    ProductRouter.get("/",allProduct)
+    ProductRouter.get("/:id",singleProduct)
     export default ProductRouter;

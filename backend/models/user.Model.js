@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { type } from "os";
 import validator from "validator";
 
 const userSchema = new Schema(
@@ -20,6 +21,9 @@ const userSchema = new Schema(
       required: [true, "Please enter password"],
       minLength: [8, "Password should be at least 8 characters"],
       select: false, // Exclude password from queries by default
+    },
+    userProfile:{
+      type:String
     },
     role: {
       type: String,
