@@ -1,6 +1,7 @@
 import ProductModel from "../models/Product.Model.js";
 import fs from 'fs';
 import path from 'path';
+import userModel from "../models/user.Model.js";
 
 //! create product
 
@@ -170,4 +171,40 @@ export const singleProduct = async (req, res) => {
   }
 };
 
+//! create revies
+export const review= async (req,res)=>{
+  try {
+     const {rating,comment,productId}=req.body;
+    //  console.log(req.userId)
+    // find user
+    const user= await userModel.findById(req.userId)
+    // console.log(user)
+    const review={
+      user:user._id,
+      name:user.name,
+      rating:Number(rating),
+      comment
+    }
+    const product= await ProductModel.findById(productId)
+    const reviewExist= product.reviews.find(review=>review.user.toString()===user._id.toString())
+    console.log(reviewExist)
+    if(reviewExist){
+     product.reviews.forEach(rev=>{
+      if(req.userId.toString()===user._id.toString()){
+        // console.log(10)
+        rev.rating=review.rating,
+        rev.comment=review.comment
+
+      }
+     })
+    }else{
+      product.reviews.push(review)
+      product.numOfReviews.reviews.length
+    }
+    await product.save({validateBeforeSave:false})
+    return res.status(200).json({message:"reviews sucessful",product})
+  } catch (error) {
+    return res.status(500).json({message:`server error ${error.message}`})
+  }
+}
 

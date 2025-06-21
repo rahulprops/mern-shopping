@@ -1,5 +1,5 @@
     import express from 'express'
-    import { allProduct, createProduct, deleteProduct, singleProduct, updateProduct } from '../controllers/product.Controller.js';
+    import { allProduct, createProduct, deleteProduct, review, singleProduct, updateProduct } from '../controllers/product.Controller.js';
     import shortid from 'shortid'
     import path from 'path';
     import multer from 'multer';
@@ -27,4 +27,5 @@ import { isAdmin, isAuthUser } from '../middleware/auth/isAuth.js';
     ProductRouter.put("/update/:id", isAuthUser,isAdmin,uploadProduct.single("productImage"),updateProduct)
     ProductRouter.get("/",allProduct)
     ProductRouter.get("/:id",singleProduct)
+    ProductRouter.put("/review",isAuthUser,review)
     export default ProductRouter;
