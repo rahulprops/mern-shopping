@@ -51,3 +51,17 @@ export const getSingleOrders= async (req,res)=>{
         return res.status(500).json({message:`server error ${error.message}`})
     }
  }
+
+ //! all orders
+ export const allOrders=async (req,res)=>{
+    try {
+         const order=await orderModle.find()
+         let totalAmount=0;
+         order.forEach(order=>{
+            totalAmount+=order.totalPrice;
+         })
+         return res.status(200).json({message:"all orders",order,totalAmount})
+    } catch (error) {
+      return res.status(500).json({message:`server error ${error.message}`})  
+    }
+ }
