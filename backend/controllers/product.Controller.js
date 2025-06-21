@@ -45,8 +45,6 @@ export const createProduct = async (req, res) => {
 };
 
 //!delete product 
-
-
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -71,3 +69,51 @@ export const deleteProduct = async (req, res) => {
     });
   }
 };
+
+//! update product 
+
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    //  Check if the product exists
+    let product = await ProductModel.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    //  Update the product with new data
+    product = await ProductModel.findByIdAndUpdate(id, req.body, {
+      new: true,             // Return the updated document
+      runValidators: true,   // Ensure updated values are valid
+    });
+
+    // 
+    res.status(200).json({
+      message: "Product updated successfully",
+      product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: `Server error: ${error.message}`,
+    });
+  }
+};
+
+//! get all product 
+export const allProduct = async (req, res) => {
+  try {
+    const products = await ProductModel.find();
+
+    res.status(200).json({
+      message: "All products fetched successfully",
+      total: products.length,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: `Server error: ${error.message}`,
+    });
+  }
+};
+
