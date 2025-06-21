@@ -208,3 +208,16 @@ export const review= async (req,res)=>{
   }
 }
 
+//! get reviews
+ export const GetReviews=async (req,res)=>{
+  try {
+     const product= await ProductModel.findById(req.query.id)
+     if(!product){
+      return res.status(400).json({message:"not found product"})
+
+     }
+     return res.status(200).json({message:"get reviews",reviews:product.reviews})
+  } catch (error) {
+     return res.status(500).json({message:`server error ${error.message}`})
+  }
+ }
