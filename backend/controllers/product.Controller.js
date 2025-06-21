@@ -84,38 +84,54 @@ export const deleteProduct = async (req, res) => {
     });
   }
 };
-
-
-
 //! update product 
+
+
 
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    //  Check if the product exists
-    let product = await ProductModel.findById(id);
+    //  Find existing product
+    const product = await ProductModel.findById(id);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    //  Update the product with new data
-    product = await ProductModel.findByIdAndUpdate(id, req.body, {
-      new: true,             // Return the updated document
-      runValidators: true,   // Ensure updated values are valid
+    //  Prepare updated fields
+    const updatedFields = { ...req.body };
+
+    // Handle image update
+    if (req.file && req.file.filename) {
+      // Delete old image
+      const oldImagePath = path.join(process.cwd(), 'backend','public', 'product', product.productImage);
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
+
+      // Set new image filename
+      updatedFields.productImage = req.file.filename;
+    }
+
+    // 4. Update the product
+    const updatedProduct = await ProductModel.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+      runValidators: true,
     });
 
-    // 
+    // 5. Response
     res.status(200).json({
       message: "Product updated successfully",
-      product,
+      product: updatedProduct,
     });
+
   } catch (error) {
     res.status(500).json({
       message: `Server error: ${error.message}`,
     });
   }
 };
+
 
 //! get all product 
 export const allProduct = async (req, res) => {

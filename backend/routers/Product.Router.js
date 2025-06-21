@@ -1,5 +1,5 @@
     import express from 'express'
-    import { createProduct, deleteProduct } from '../controllers/product.Controller.js';
+    import { createProduct, deleteProduct, updateProduct } from '../controllers/product.Controller.js';
     import shortid from 'shortid'
     import path from 'path';
     import multer from 'multer';
@@ -23,5 +23,6 @@
     })
     ProductRouter.post("/create",uploadProduct.single("productImage"),createProduct)
     ProductRouter.delete("/:id",deleteProduct)
+    ProductRouter.put("/update/:id",uploadProduct.single("productImage"),updateProduct)
 
     export default ProductRouter;
