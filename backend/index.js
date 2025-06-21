@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import ProductRouter from './routers/Product.Router.js';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import OrderRouter from './routers/Order.Router.js';
 
 dotenv.config({path:"./backend/.env"})
 const app =express()
@@ -22,6 +23,7 @@ app.use("/image", express.static(path.join(process.cwd(), "public")));
  //! apis
  app.use("/api/user",UserRouter)
  app.use("/api/product",ProductRouter)
+ app.use("/api/order",OrderRouter)
 
  //! 404 handle
 //  app.use("*",(req,res)=>{

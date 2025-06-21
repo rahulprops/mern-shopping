@@ -22,6 +22,10 @@ const orderSchema = new Schema({
       type: Number,
       required: true,
     },
+    PhoneNo:{
+        type:Number,
+        required:true
+    }
   },
   orderItems: [
     {
