@@ -28,3 +28,20 @@ export const isAuthUser=async (req,res,next)=>{
         })
     }
 }
+
+//! admin
+export const isAdmin=async (req,res,next)=>{
+    try {
+        const userId =req.userId
+        // console.log(userId)
+        const user= await userModel.findById(userId)
+        // console.log(user)
+        if(user.role==='admin'){
+            next()
+        }else{
+            return res.status(400).json({message:"user role is not admin"})
+        }
+    } catch (error) {
+         return res.status(500).json({message:`server error ${error.message}`})
+    }
+}
