@@ -7,7 +7,7 @@ import ProductRouter from './routers/Product.Router.js';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import OrderRouter from './routers/Order.Router.js';
-
+import cors from 'cors'
 dotenv.config({path:"./backend/.env"})
 const app =express()
  const port =process.env.PORT || 4000;
@@ -16,6 +16,12 @@ const app =express()
  app.use(bodyParser.json())
  app.use(bodyParser.urlencoded({extended:true}))
 app.use(cookieParser())
+  app.use(cors({
+    origin:process.env.ORGIN,
+    methods:["GET","POST","PUT","DELETE"],
+    credentials:true
+}))
+
 //! Serve static images
 app.use("/image", express.static(path.join(process.cwd(), "public")));
 //http://localhost:PORT/image/product/filename.jpg
