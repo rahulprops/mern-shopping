@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '../Features/user/authApi';
 
 const Register = () => {
   const navigate = useNavigate();
-
+ const [register, { isLoading, error , isError }] = useRegisterMutation(); // ← Use mutation
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
   });
+  useEffect(()=>{
+    if(isError){
+      alert(error.data.message)
+      console.log(error.data.message)
+    }
+  },[error,isError])
 
   const [errors, setErrors] = useState({});
 
@@ -34,12 +41,16 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log('Registering user:', formData);
-      // TODO: Send API call here
-      // On success: navigate('/login');
+      try {
+        const res = await register(formData).unwrap(); // Call API
+        console.log('User registered:', res);
+        navigate('/login'); // Redirect to login
+      } catch (err) {
+        console.error('Registration failed:', err);
+      }
     }
   };
 
