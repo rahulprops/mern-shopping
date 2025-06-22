@@ -1,13 +1,14 @@
 import React from 'react';
 import { useGetProductQuery } from '../Features/Product/ProductSlice';
 import ProductCard from './Product';
+import Loader from './Loader';
 
 
 const ProductContainer = () => {
   const { data, isLoading, error } = useGetProductQuery();
   console.log(data)
 
-  if (isLoading) return <p className="text-center">Loading products...</p>;
+  if (isLoading) return <Loader/>;
   if (error) return <p className="text-center text-red-500">Failed to load products</p>;
 
   return (
