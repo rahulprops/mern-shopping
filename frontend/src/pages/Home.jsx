@@ -12,10 +12,10 @@ const Home = () => {
   return (
     <div>
         <PageTitle title="Home-shopping" />
-        <Navbar/>
+        
          <ImageSlider/>
           <ProductContainer />
-        <Footer/>
+      
     </div>
   )
 }

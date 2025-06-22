@@ -6,7 +6,7 @@ import Loader from './Loader';
 
 const ProductContainer = () => {
   const { data, isLoading, error } = useGetProductQuery();
-  console.log(data)
+  
 
   if (isLoading) return <Loader/>;
   if (error) return <p className="text-center text-red-500">Failed to load products</p>;
