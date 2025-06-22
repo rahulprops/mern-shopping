@@ -6,7 +6,8 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
-  const cartItemCount = 3; // 🛒 Replace with dynamic count
+  const user = false; // Replace with your auth state logic (e.g., from Redux or Context)
+  const cartItemCount = 3; // Replace with real cart data
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -24,9 +25,9 @@ const Navbar = () => {
           <li><Link to="/contact" className="hover:text-blue-600">Contact</Link></li>
         </ul>
 
-        {/* Icons */}
+        {/* Right Icons */}
         <div className="flex items-center gap-4">
-          {/* Cart */}
+          {/* Cart Icon */}
           <div className="relative cursor-pointer">
             <Link to="/cart">
               <FaShoppingCart size={22} />
@@ -36,30 +37,37 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Profile */}
-          <div className="relative">
-            <FaUserCircle
-              size={26}
-              className="cursor-pointer"
-              onClick={() => setProfileOpen(!profileOpen)}
-            />
-            {profileOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-40 py-2 text-sm z-50">
-                <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">My Profile</Link>
-                <Link to="/orders" className="block px-4 py-2 hover:bg-gray-100">Orders</Link>
-                <Link to="/logout" className="block px-4 py-2 hover:bg-gray-100 text-red-600">Logout</Link>
-              </div>
-            )}
-          </div>
+          {/* Auth Buttons or Profile */}
+          {user ? (
+            <div className="relative">
+              <FaUserCircle
+                size={26}
+                className="cursor-pointer"
+                onClick={() => setProfileOpen(!profileOpen)}
+              />
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-40 py-2 text-sm z-50">
+                  <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">My Profile</Link>
+                  <Link to="/orders" className="block px-4 py-2 hover:bg-gray-100">Orders</Link>
+                  <Link to="/logout" className="block px-4 py-2 hover:bg-gray-100 text-red-600">Logout</Link>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex gap-3">
+              <Link to="/login" className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Login</Link>
+              <Link to="/register" className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Register</Link>
+            </div>
+          )}
 
-          {/* Mobile Menu Icon */}
+          {/* Mobile Menu Toggle */}
           <div className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
           </div>
         </div>
       </div>
 
-      {/* Mobile Nav Menu */}
+      {/* Mobile Menu */}
       {menuOpen && (
         <ul className="md:hidden bg-white px-4 pb-4 space-y-2 text-gray-700 font-medium">
           <li><Link to="/" className="block py-2 border-b">Home</Link></li>
