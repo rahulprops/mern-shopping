@@ -11,7 +11,16 @@ export const productApi = apiSlice.injectEndpoints({
         return data.products
       }
     }),
+    ProductDetails:builder.query({
+        query:(id)=>({
+           url:`/product/${id}`,
+           method:"GET"
+        }),
+        transformResponse:(data)=>{
+        return data.product
+      }
+    })
   }),
 });
 
-export const { useGetProductQuery } = productApi;
+export const { useGetProductQuery,useLazyProductDetailsQuery } = productApi;

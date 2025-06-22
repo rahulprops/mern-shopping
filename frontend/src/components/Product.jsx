@@ -1,11 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-xl transition duration-300">
       <img
-        src={`http://localhost:5590/image/backend/public/product/${product.productImage
-}`}
+        src={`http://localhost:5590/image/product/${product.productImage}`}
         alt={product.name}
         className="w-full h-48 object-cover"
       />
@@ -24,9 +24,12 @@ const ProductCard = ({ product }) => {
         <p className="text-sm text-gray-600 mt-2 line-clamp-2">
           {product.description}
         </p>
-        <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+        <Link
+          to={`/product/${product._id}`}
+          className="block mt-4 bg-blue-600 text-white py-2 text-center rounded hover:bg-blue-700"
+        >
           View Product
-        </button>
+        </Link>
       </div>
     </div>
   );
